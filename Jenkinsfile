@@ -2,9 +2,10 @@ pipeline {
     agent any
     environment {
         SCANNER_HOME= "sonar"
-
+    }
     stages {
-        steps {
+        stage ("Soanr") {
+            steps {
                 withSonarQubeEnv("sonar") {
                         sh """
                             ${SCANNER_HOME}/bin/sonar-scanner \
@@ -13,6 +14,7 @@ pipeline {
                             """
                 }
             }
+        }
         stage('Build & Tag Docker Image') {
             steps {
                 script {
