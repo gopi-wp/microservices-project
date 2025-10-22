@@ -9,7 +9,7 @@ pipeline {
                 withSonarQubeEnv("sonar") {
                         sh """
                             ${SCANNER_HOME}/bin/sonar-scanner \
-                            -Dsonar.projectKey= cartservice\
+                            -Dsonar.projectKey=cartservice\
                             -Dsonar.sources=. \
                             -Dsonar.branch.name=cartservice
                             """
