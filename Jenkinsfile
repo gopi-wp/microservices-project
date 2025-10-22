@@ -1,13 +1,17 @@
 pipeline {
     agent any
-
+  environment {
+        SCANNER_HOME=tool "sonar"
+    }
     stages {
-        stage('Build & Tag Docker Image') {
+        stage ("Soanr") {
             steps {
-                script {
-                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                        sh "docker build -t gopibrahmaiah/emailservice:latest ."
-                    }
+                withSonarQubeEnv("sonar") {
+                        sh """
+                            ${SCANNER_HOME}/bin/sonar-scanner \
+                            -Dsonar.projectKey=emailservice\
+                            -Dsonar.sources=. \
+                            """
                 }
             }
         }
