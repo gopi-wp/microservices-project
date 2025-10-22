@@ -3,7 +3,9 @@ pipeline {
     environment {
         SCANNER_HOME=tool "sonar"
     }
-    stage ("CQA") {
+    stages {
+        
+       stage ("CQA") {
             steps {
                 withSonarQubeEnv("sonar") {
                       sh "${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=adservice"
@@ -17,8 +19,6 @@ pipeline {
                 }
             }
         }
-
-    stages {
         stage('Build & Tag Docker Image') {
             steps {
                 script {
