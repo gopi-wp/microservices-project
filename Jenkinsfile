@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     stages {
         stage('Build & Tag Docker Image') {
             steps {
@@ -8,11 +9,6 @@ pipeline {
                         sh "docker build -t gopibrahmaiah/adservice:latest ."
                     }
                 }
-            }
-        }
-        stage ("Scan") {
-            steps {
-                sh "trivy image gopibrahmaiah/adservice:latest >>appimage.txt"
             }
         }
         
