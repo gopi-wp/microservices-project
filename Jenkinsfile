@@ -1,16 +1,23 @@
 pipeline {
     agent any
+
     environment {
-        SCANNER_HOME=tool "sonar"
+        SCANNER_HOME = tool "sonar"
     }
-    stage ("CQA") {
+
+    stages {
+        stage("CQA") {
             steps {
                 withSonarQubeEnv("sonar") {
-                      sh "${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=cartservice"
+                    sh """
+                        ${SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectKey=cartservice
+                    """
                 }
             }
         }
-        stage ("QualityGates") {
+
+        stage("Quality Gates") {
             steps {
                 script {
                     waitForQualityGate abortPipeline: false, credentialsId: 'sonar-cred'
@@ -18,8 +25,7 @@ pipeline {
             }
         }
 
-    stages {
-        stage('Build & Tag Docker Image') {
+        stage("Build & Tag Docker Image") {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
@@ -28,17 +34,18 @@ pipeline {
                 }
             }
         }
-        stage ("Scan") {
+
+        stage("Scan Image with Trivy") {
             steps {
-                sh "trivy image gopibrahmaiah/cartservice:latest >>appimage.txt"
+                sh "trivy image gopibrahmaiah/cartservice:latest > appimage.txt"
             }
         }
-        
-        stage('Push Docker Image') {
+
+        stage("Push Docker Image") {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                        sh "docker push gopibrahmaiah/cartservice:latest "
+                        sh "docker push gopibrahmaiah/cartservice:latest"
                     }
                 }
             }
