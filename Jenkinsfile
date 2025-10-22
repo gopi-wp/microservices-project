@@ -1,7 +1,20 @@
 pipeline {
     agent any
-
+    environment {
+        SCANNER_HOME=tool "sonar"
+    }
     stages {
+        stage ("Soanr") {
+            steps {
+                withSonarQubeEnv("sonar") {
+                        sh """
+                            ${SCANNER_HOME}/bin/sonar-scanner \
+                            -Dsonar.projectKey=loadgenerator\
+                            -Dsonar.sources=. \
+                            """
+                }
+            }
+        }
         stage('Build & Tag Docker Image') {
             steps {
                 script {
