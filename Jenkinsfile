@@ -4,11 +4,11 @@ pipeline {
         SCANNER_HOME=tool "sonar"
     }
     stages {
-        stage ("Sonar") {
+         stage ("Sonar") {
             steps {
                 withSonarQubeEnv("sonar") {
                         sh """
-                            ${SCANNER_HOME}/bin/sonar-scanner -X \
+                            ${SCANNER_HOME}/bin/sonar-scanner \
                             -Dsonar.projectKey=adservice\
                             -Dsonar.sources=. \
                             """
