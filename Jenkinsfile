@@ -8,7 +8,7 @@ pipeline {
             steps {
                 withSonarQubeEnv("sonar") {
                         sh """
-                            ${SCANNER_HOME}/bin/sonar-scanner \
+                            ${SCANNER_HOME}/bin/sonar-scanner -x \
                             -Dsonar.projectKey=adservice\
                             -Dsonar.sources=. \
                             """
