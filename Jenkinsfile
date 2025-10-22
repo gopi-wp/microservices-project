@@ -11,18 +11,22 @@ pipeline {
                 }
             }
         }
-        stage('trivy scann') {
+
+        stage('Trivy Scan') {
             steps {
                 sh "trivy image gopibrahmaiah/adservice:latest"
-        
+            }
+        }
+
         stage('Push Docker Image') {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                        sh "docker push gopibrahmaiah/adservice:latest "
+                        sh "docker push gopibrahmaiah/adservice:latest"
                     }
                 }
             }
         }
     }
 }
+
