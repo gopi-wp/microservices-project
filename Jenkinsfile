@@ -4,20 +4,14 @@ pipeline {
         SCANNER_HOME = tool "sonar" 
     }
     stages {
-        stage ("checkout") {
-            steps {
-                checkout scm
-                echo "Building branch: ${env.BRANCH_NAME}"
-            }
-        }
         stage ("Sonar") {
             steps {
                 withSonarQubeEnv("sonar") {
                         sh """
                             ${SCANNER_HOME}/bin/sonar-scanner \
-                            -Dsonar.projectKey=${projectKey} \
+                            -Dsonar.projectKey= adservice\
                             -Dsonar.sources=. \
-                            -Dsonar.branch.name=${env.BRANCH_NAME}
+                            -Dsonar.branch.name=adservice
                             """
                 }
             }
