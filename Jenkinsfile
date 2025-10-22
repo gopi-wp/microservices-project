@@ -1,7 +1,19 @@
 pipeline {
     agent any
+    environment {
+        SCANNER_HOME= "sonar"
 
     stages {
+        steps {
+                withSonarQubeEnv("sonar") {
+                        sh """
+                            ${SCANNER_HOME}/bin/sonar-scanner \
+                            -Dsonar.projectKey=currencyservice\
+                            -Dsonar.sources=. \
+                            """
+                }
+            }
+        }
         stage('Build & Tag Docker Image') {
             steps {
                 script {
