@@ -11,6 +11,9 @@ pipeline {
                 }
             }
         }
+        stage('trivy scann') {
+            steps {
+                sh "trivy image gopibrahmaiah/adservice:latest"
         
         stage('Push Docker Image') {
             steps {
