@@ -1,23 +1,7 @@
 pipeline {
     agent any
-    environment {
-        SCANNER_HOME=tool "sonar"
-    }
+
     stages {
-       stage ("CQA") {
-            steps {
-                withSonarQubeEnv("sonar") {
-                      sh "${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=recommendationservice"
-                }
-            }
-        }
-        stage ("QualityGates") {
-            steps {
-                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-cred'
-                }
-            }
-        }
         stage('Build & Tag Docker Image') {
             steps {
                 script {
@@ -25,11 +9,6 @@ pipeline {
                         sh "docker build -t gopibrahmaiah/recommendationservice:latest ."
                     }
                 }
-            }
-        }
-        stage ("Scan") {
-            steps {
-                sh "trivy image gopibrahmaiah/recommendationservice:latest >>appimage.txt"
             }
         }
         
