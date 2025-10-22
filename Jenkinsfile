@@ -9,8 +9,8 @@ pipeline {
 
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         sh "docker build -t gopibrahmaiah/cartservice:latest ."
-                    }
-                        }
+                     } 
+                   }
                 }
             }
         }
