@@ -15,6 +15,15 @@ pipeline {
                 }
             }
         }
+        stage('Build & Tag Docker Image') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        sh "docker build -t gopibrahmaiah/emailservice:latest ."
+                    }
+                }
+            }
+        }
         stage ("trivy scan") {
             steps {
                 sh "trivy image gopibrahmaiah/emailservice:latest"
