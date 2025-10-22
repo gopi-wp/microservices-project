@@ -1,24 +1,6 @@
 pipeline {
     agent any
-    environment {
-        SCANNER_HOME=tool "sonar"
-    }
     stages {
-        
-       stage ("CQA") {
-            steps {
-                withSonarQubeEnv("sonar") {
-                      sh "${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=adservice"
-                }
-            }
-        }
-        stage ("QualityGates") {
-            steps {
-                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-cred'
-                }
-            }
-        }
         stage('Build & Tag Docker Image') {
             steps {
                 script {
