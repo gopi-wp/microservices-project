@@ -11,7 +11,6 @@ pipeline {
                             ${SCANNER_HOME}/bin/sonar-scanner \
                             -Dsonar.projectKey= adservice\
                             -Dsonar.sources=. \
-                            -Dsonar.branch.name=adservice
                             """
                 }
             }
